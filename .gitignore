@@ -1,0 +1,69 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environment
+venv/
+.venv/
+env/
+ENV/
+pip-log.txt
+pip-delete-this-directory.txt
+pipfile.lock
+
+# Django
+*.log
+db.sqlite3
+db.sqlite3-journal
+*.pot
+*.pyc
+*.pyo
+*.pyd
+*.so
+*.swp
+
+# Local Environment Variables
+.env
+*.local
+
+# Celery
+celerybeat-schedule
+
+# VS Code & JetBrains (PyCharm)
+.vscode/
+.idea/
+*.iml
+
+# MacOS & Windows
+.DS_Store
+Thumbs.db
+
+# Compiled C files
+*.o
+*.so
+*.a
+*.dll
+
+# Coverage Reports
+htmlcov/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Migrations (optional: keep initial migrations)
+**/migrations/**/000*.py
+**/migrations/**/__pycache__/
+
+# Docker (if using Docker)
+docker-compose.override.yml
+
+
+# Node.js
+node_modules
+package-lock.json

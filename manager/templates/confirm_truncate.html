@@ -1,0 +1,39 @@
+{% extends 'base.html' %} {% block content %}
+<div
+    class="mx-auto mt-10 max-w-lg rounded-lg border border-zinc-800 bg-zinc-100 p-6 dark:bg-zinc-950"
+>
+    <h2 class="text-center text-2xl font-bold">Confirm Truncate</h2>
+
+    <p class="text-center text-zinc-200">
+        Are you sure you want to delete <strong>all {{ object_type }}</strong>?
+        This action cannot be undone
+    </p>
+
+    <form method="post" class="mt-4 text-center">
+        {% csrf_token %} {% if object_type == "items"%}
+        <button
+            type="submit"
+            name="items"
+            class="w-40 cursor-pointer rounded-lg border border-zinc-800 bg-zinc-100 py-2 text-white hover:bg-zinc-900 dark:bg-zinc-950"
+        >
+            Yes, Delete Items
+        </button>
+        {% else %}
+        <button
+            type="submit"
+            name="tables"
+            class="w-40 cursor-pointer rounded-lg border border-zinc-800 bg-zinc-100 py-2 text-white hover:bg-zinc-900 dark:bg-zinc-950"
+        >
+            Yes, Delete Tables
+        </button>
+        {% endif %}
+        <button
+            type="submit"
+            name="cancel"
+            class="w-40 cursor-pointer rounded-lg border border-zinc-800 p-2 text-center transition duration-300 hover:bg-zinc-900"
+        >
+            Cancel
+        </button>
+    </form>
+</div>
+{% endblock %}

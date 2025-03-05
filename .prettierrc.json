@@ -1,0 +1,11 @@
+{
+    "plugins": ["prettier-plugin-tailwindcss", "prettier-plugin-astro"],
+    "overrides": [
+        {
+            "files": ["*.html"],
+            "options": { "parser": "html" }
+        }
+    ],
+    "tabWidth": 4,
+    "useTabs": false
+}

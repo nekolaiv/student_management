@@ -1,0 +1,90 @@
+<!doctype html>
+{% load static %}
+<html lang="en" class="overflow-hidden">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{% block title %}My Django App{% endblock %}</title>
+        <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+        <script src="{% static 'js/tailwind.js' %}"></script>
+        <script src="{% static 'js/jquery-3.7.1.min.js' %}"></script>
+        <!-- <script src="https://unpkg.com/@tailwindcss/browser@4"></script> -->
+        <!-- <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> -->
+        <script>
+            tailwind.config = {
+                darkMode: "class",
+            };
+        </script>
+    </head>
+    <body
+        class="max-w-screen flex max-h-screen min-h-screen overflow-hidden bg-zinc-100 text-zinc-950 dark:bg-zinc-950 dark:text-zinc-300"
+    >
+        <aside
+            class="flex h-screen max-h-screen w-60 min-w-60 max-w-60 flex-col bg-zinc-900"
+        >
+            <header
+                class="max-w-screen relative flex max-h-screen items-center justify-start px-6 py-4"
+            >
+                <h1>TABLES LIST</h1>
+            </header>
+            <div class="flex-grow px-4">
+                <ul class="flex flex-col gap-2">
+                    {% for table in tables %}
+                    <li>
+                        <a
+                            href="/?table_id={{ table.id }}"
+                            class="{% if table.id == selected_table.id %}active{% endif %}"
+                        >
+                            <button
+                                class="w-full cursor-pointer rounded-lg border border-zinc-800 px-4 py-2 text-left transition duration-300 hover:bg-zinc-800"
+                            >
+                                {{ table.name }}
+                            </button>
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <footer
+                class="flex flex-col items-center justify-between px-4 py-6"
+            >
+                <a href="{% url 'table_create' %}"
+                    ><button
+                        class="w-40 cursor-pointer rounded-lg border border-zinc-800 p-2 text-center transition duration-300 hover:bg-zinc-800"
+                    >
+                        + Create a Table
+                    </button></a
+                >
+
+                <a href="{% url 'truncate_tables' %}" class="mt-2 w-fit"
+                    ><button
+                        class="w-40 cursor-pointer rounded-lg border border-zinc-800 p-2 text-center transition duration-300 hover:bg-zinc-800"
+                    >
+                        Delete All Tables
+                    </button></a
+                >
+            </footer>
+        </aside>
+        <main class="flex max-h-screen w-full flex-col overflow-hidden">
+            <header class="max-w-screen relative px-6 py-2">
+                <nav class="">
+                    <ul class="flex items-center justify-start">
+                        <li>
+                            <a href="/" class="text-lg"
+                                ><h1>Items Crudified</h1></a
+                            >
+                        </li>
+                    </ul>
+                </nav>
+            </header>
+            <section class="relative flex-grow overflow-auto">
+                {% block content %}{% endblock %}
+            </section>
+            <footer
+                class="relative w-full bg-zinc-100 p-4 text-center text-zinc-950 dark:bg-zinc-950 dark:text-zinc-300"
+            >
+                © 2025 Nekolaiv.Dev - All Rights Reserved
+            </footer>
+        </main>
+    </body>
+</html>

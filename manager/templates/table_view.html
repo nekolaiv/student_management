@@ -1,0 +1,139 @@
+{% extends 'base.html' %} {% block content %} {% load static %}
+<div class="flex max-h-full flex-col px-6">
+    {% if selected_table %}
+    <div class="flex items-center justify-between">
+        <h2>{{ selected_table.name }}</h2>
+        <div class="">
+            <a
+                href="tables/{{ selected_table.id }}/table/edit/"
+                class="mt-2 w-fit"
+                ><button
+                    class="w-40 cursor-pointer rounded-lg border border-zinc-800 p-2 text-center transition duration-300 hover:bg-zinc-900"
+                >
+                    Edit Table
+                </button></a
+            >
+            <a
+                href="tables/{{ selected_table.id }}/table/delete/"
+                class="mt-2 w-fit"
+                ><button
+                    class="w-40 cursor-pointer rounded-lg border border-zinc-800 p-2 text-center transition duration-300 hover:bg-zinc-900"
+                >
+                    Delete Table
+                </button></a
+            >
+            <a
+                href="{% url 'truncate_items' table_id=selected_table.id %}"
+                class="mt-2 w-fit"
+                ><button
+                    class="w-40 cursor-pointer rounded-lg border border-zinc-800 p-2 text-center transition duration-300 hover:bg-zinc-900"
+                >
+                    Delete all items
+                </button></a
+            >
+        </div>
+    </div>
+    <input
+        type="text"
+        id="search"
+        name="q"
+        placeholder="Search..."
+        value="{{ search_query }}"
+        class="mb-4 w-full rounded-lg border border-zinc-800 bg-zinc-900 p-2 text-white"
+    />
+
+    <div class="rounded-lg border border-zinc-800 shadow">
+        <table class="w-full border-collapse">
+            <thead class="text-zinc-400">
+                <tr>
+                    <th
+                        class="w-24 rounded-lg py-3 transition duration-300 hover:bg-zinc-900"
+                    >
+                        ID
+                    </th>
+                    <th
+                        class="flex-1 rounded-lg py-3 transition duration-300 hover:bg-zinc-900"
+                    >
+                        Name
+                    </th>
+                    <th
+                        class="w-56 rounded-lg py-3 transition duration-300 hover:bg-zinc-900"
+                    >
+                        Price
+                    </th>
+                    <th
+                        class="w-12 rounded-lg py-3 transition duration-300 hover:bg-zinc-900"
+                        colspan="2"
+                    >
+                        Actions
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="items-table">
+                {% for i in items %}
+                <tr class="border-t text-center dark:border-zinc-800">
+                    <td
+                        class="rounded-lg py-3 transition duration-300 hover:bg-zinc-900"
+                    >
+                        {{ i.id }}
+                    </td>
+                    <td
+                        class="rounded-lg py-3 transition duration-300 hover:bg-zinc-900"
+                    >
+                        {{ i.name }}
+                    </td>
+                    <td
+                        class="rounded-lg py-3 transition duration-300 hover:bg-zinc-900"
+                    >
+                        {{ i.price }}
+                    </td>
+                    <td class="w-28 py-3">
+                        <a
+                            href="tables/{{ selected_table.id }}/items/{{ i.id }}/edit/"
+                        >
+                            <button
+                                class="w-20 cursor-pointer rounded-lg border border-zinc-800 p-px transition duration-300 hover:bg-zinc-900"
+                            >
+                                edit
+                            </button>
+                        </a>
+                    </td>
+                    <td class="w-28 py-3">
+                        <a
+                            href="tables/{{ selected_table.id }}/items/{{ i.id }}/delete/"
+                        >
+                            <button
+                                class="w-20 cursor-pointer rounded-lg border border-zinc-800 p-px transition duration-300 hover:bg-zinc-900"
+                            >
+                                delete
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr id="no-results">
+                    <td colspan="5" class="py-3 text-center text-zinc-400">
+                        No results found
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <a href="tables/{{ selected_table.id }}/items/add/" class="mt-2 w-fit"
+        ><button
+            class="w-40 cursor-pointer rounded-lg border border-zinc-800 p-2 text-center transition duration-300 hover:bg-zinc-900"
+        >
+            Add Item
+        </button></a
+    >
+    {% else %}
+    <h2>Select a table from the left</h2>
+    {% endif %}
+</div>
+<script>
+    const searchUrl = "{% url 'table_view' %}";
+</script>
+<script src="{% static 'js/scripts.js' %}"></script>
+
+{% endblock %}
