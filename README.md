@@ -1,4 +1,4 @@
-# Items Crudified
+# Student Management System
 
 ## Description
 A simple project for managing item with Create, Read, Update, and Delete Functionalities.
