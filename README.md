@@ -11,7 +11,7 @@ A simple project for managing item with Create, Read, Update, and Delete Functio
 
 ## Installation
 1. Clone the repository:  
-   `git clone https://github.com/nekolaiv/items-crudified.git`
+   `git clone https://github.com/nekolaiv/student-management.git`
 
 2. Make sure to have your Django Environment Setup.
 
