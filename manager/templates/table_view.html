@@ -23,7 +23,7 @@
                 </button></a
             >
             <a
-                href="{% url 'truncate_items' table_id=selected_table.id %}"
+                href="{% url 'truncate_students' table_id=selected_table.id %}"
                 class="mt-2 w-fit"
                 ><button
                     class="w-40 cursor-pointer rounded-lg border border-zinc-800 p-2 text-center transition duration-300 hover:bg-zinc-900"
@@ -47,22 +47,42 @@
             <thead class="text-zinc-400">
                 <tr>
                     <th
-                        class="w-24 rounded-lg py-3 transition duration-300 hover:bg-zinc-900"
+                        class="w-24 text-xs rounded-lg py-3 transition duration-300 hover:bg-zinc-900"
                     >
-                        ID
+                        StudentID
                     </th>
                     <th
-                        class="flex-1 rounded-lg py-3 transition duration-300 hover:bg-zinc-900"
+                        class="w-56 text-xs rounded-lg py-3 transition duration-300 hover:bg-zinc-900"
                     >
-                        Name
+                        First Name
                     </th>
                     <th
-                        class="w-56 rounded-lg py-3 transition duration-300 hover:bg-zinc-900"
+                        class="w-56 text-xs rounded-lg py-3 transition duration-300 hover:bg-zinc-900"
                     >
-                        Price
+                        Last Name
                     </th>
                     <th
-                        class="w-12 rounded-lg py-3 transition duration-300 hover:bg-zinc-900"
+                        class="w-56 text-xs rounded-lg py-3 transition duration-300 hover:bg-zinc-900"
+                    >
+                        Email
+                    </th>
+                    <th
+                        class="w-56 text-xs rounded-lg py-3 transition duration-300 hover:bg-zinc-900"
+                    >
+                        Date of Birth
+                    </th>
+                    <th
+                        class="w-56 text-xs rounded-lg py-3 transition duration-300 hover:bg-zinc-900"
+                    >
+                        Course
+                    </th>
+                    <th
+                        class="w-56 text-xs rounded-lg py-3 transition duration-300 hover:bg-zinc-900"
+                    >
+                        Enrollment Date
+                    </th>
+                    <th
+                        class="w-56 text-xs rounded-lg py-3 transition duration-300 hover:bg-zinc-900"
                         colspan="2"
                     >
                         Actions
@@ -70,26 +90,46 @@
                 </tr>
             </thead>
             <tbody id="items-table">
-                {% for i in items %}
+                {% for s in students %}
                 <tr class="border-t text-center dark:border-zinc-800">
                     <td
-                        class="rounded-lg py-3 transition duration-300 hover:bg-zinc-900"
+                        class="text-xs rounded-lg py-3 transition duration-300 hover:bg-zinc-900"
                     >
-                        {{ i.id }}
+                        {{ s.student_id }}
                     </td>
                     <td
-                        class="rounded-lg py-3 transition duration-300 hover:bg-zinc-900"
+                        class="text-xs rounded-lg py-3 transition duration-300 hover:bg-zinc-900"
                     >
-                        {{ i.name }}
+                        {{ s.first_name }}
                     </td>
                     <td
-                        class="rounded-lg py-3 transition duration-300 hover:bg-zinc-900"
+                        class="text-xs rounded-lg py-3 transition duration-300 hover:bg-zinc-900"
                     >
-                        {{ i.price }}
+                        {{ s.last_name }}
+                    </td>
+                    <td
+                        class="text-xs rounded-lg py-3 transition duration-300 hover:bg-zinc-900"
+                    >
+                        {{ s.email }}
+                    </td>
+                    <td
+                        class="text-xs rounded-lg py-3 transition duration-300 hover:bg-zinc-900"
+                    >
+                        {{ s.date_of_birth }}
+                    </td>
+                    <td
+                        class="text-xs rounded-lg py-3 transition duration-300 hover:bg-zinc-900"
+                    >
+                        {{ s.course }}
+                    </td>
+                    <td
+                        class="text-xs rounded-lg py-3 transition duration-300 hover:bg-zinc-900"
+                    >
+                        {{ s.enrollment_date }}
                     </td>
                     <td class="w-28 py-3">
                         <a
-                            href="tables/{{ selected_table.id }}/items/{{ i.id }}/edit/"
+                            href="tables/{{ selected_table.id }}/students/{{ s.student_id }}/edit/"
                         >
                             <button
                                 class="w-20 cursor-pointer rounded-lg border border-zinc-800 p-px transition duration-300 hover:bg-zinc-900"
@@ -100,7 +140,7 @@
                     </td>
                     <td class="w-28 py-3">
                         <a
-                            href="tables/{{ selected_table.id }}/items/{{ i.id }}/delete/"
+                            href="tables/{{ selected_table.id }}/students/{{ s.student_id }}/delete/"
                         >
                             <button
                                 class="w-20 cursor-pointer rounded-lg border border-zinc-800 p-px transition duration-300 hover:bg-zinc-900"
@@ -112,7 +152,7 @@
                 </tr>
                 {% empty %}
                 <tr id="no-results">
-                    <td colspan="5" class="py-3 text-center text-zinc-400">
+                    <td colspan="9" class="py-3 text-center text-zinc-400">
                         No results found
                     </td>
                 </tr>
@@ -120,11 +160,11 @@
             </tbody>
         </table>
     </div>
-    <a href="tables/{{ selected_table.id }}/items/add/" class="mt-2 w-fit"
+    <a href="tables/{{ selected_table.id }}/students/add/" class="mt-2 w-fit"
         ><button
             class="w-40 cursor-pointer rounded-lg border border-zinc-800 p-2 text-center transition duration-300 hover:bg-zinc-900"
         >
-            Add Item
+            Add Student
         </button></a
     >
     {% else %}

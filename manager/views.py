@@ -1,4 +1,4 @@
-from manager.models import Table, Item
+from manager.models import Table, Student
 from django.views import View
 from django.urls import reverse
 from django.shortcuts import redirect, render
@@ -6,8 +6,8 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 from django.urls import reverse, reverse_lazy
-from .models import Item, Table
-from .forms import ItemForm, TableForm
+from .models import Student, Table
+from .forms import StudentForm, TableForm
 
 # Create your views here.
 
@@ -15,7 +15,7 @@ from .forms import ItemForm, TableForm
 # -------------------- TABLE VIEWS --------------------
 
 
-class TableAndItemView(ListView):
+class TableAndStudentView(ListView):
     model = Table
     template_name = "table_view.html"
     context_object_name = "tables"
@@ -29,10 +29,10 @@ class TableAndItemView(ListView):
         table_id = self.request.GET.get("table_id")
         selected_table = get_object_or_404(
             Table, id=table_id) if table_id else None
-        items = selected_table.items.all() if selected_table else None
+        students = selected_table.students.all() if selected_table else None
 
         context["selected_table"] = selected_table
-        context["items"] = items
+        context["students"] = students
         return context
 
     def get(self, request, *args, **kwargs):
@@ -41,13 +41,13 @@ class TableAndItemView(ListView):
             query = request.GET.get('q', '').strip()
 
             selected_table = get_object_or_404(Table, id=table_id)
-            items = selected_table.items.all()
+            students = selected_table.students.all()
 
             if query:
-                items = items.filter(name__icontains=query)
+                students = students.filter(name__icontains=query)
 
-            items_list = list(items.values('id', 'name', 'price'))
-            return JsonResponse({'items': items_list})
+            students_list = list(students.values('student_id', 'first_name', 'last_name', 'email', 'date_of_birth', 'course', 'enrollment_date'))
+            return JsonResponse({'students': students_list})
 
         return super().get(request, *args, **kwargs)
 
@@ -101,13 +101,50 @@ class TableDeleteView(DeleteView):
     def get_success_url(self):
         return reverse("table_view")
 
-# -------------------- ITEM VIEWS --------------------
+# -------------------- STUDENT VIEWS --------------------
 
 
-class ItemCreateView(CreateView):
-    model = Item
-    form_class = ItemForm
-    template_name = "item_form.html"
+class StudentCreateView(CreateView):
+    model = Student
+    form_class = StudentForm
+    template_name = "student_form.html"
+
+    def form_valid(self, form):
+        table_id = self.kwargs.get("table_id")
+        print("POST Data:", self.request.POST)  # Debugging
+        print("Table ID:", table_id)  # Debugging
+        if not table_id:
+            return self.form_invalid(form)  # Handle error gracefully
+
+        form.instance.table = get_object_or_404(Table, id=table_id)
+        print(f"DEBUG: Retrieved Table Instance → {form.instance.table}")
+        print("DEBUG: Table instance set on form →", form.instance.table)
+        return super().form_valid(form)
+    
+    def form_invalid(self, form):
+        print("DEBUG: Form validation failed. Errors →", form.errors)  # Check for issues
+        return super().form_invalid(form)
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        table_id = self.kwargs.get("table_id")
+        if table_id:
+            context["selected_table"] = get_object_or_404(Table, id=table_id)
+        else:
+            context["selected_table"] = None
+        context["tables"] = Table.objects.all()
+        return context
+
+
+    def get_success_url(self):
+        return reverse("table_view") + f"?table_id={self.kwargs['table_id']}"
+
+
+class StudentUpdateView(UpdateView):
+    model = Student
+    form_class = StudentForm
+    template_name = "student_form.html"
 
     def form_valid(self, form):
         form.instance.table = get_object_or_404(
@@ -125,29 +162,8 @@ class ItemCreateView(CreateView):
         return reverse("table_view") + f"?table_id={self.kwargs['table_id']}"
 
 
-class ItemUpdateView(UpdateView):
-    model = Item
-    form_class = ItemForm
-    template_name = "item_form.html"
-
-    def form_valid(self, form):
-        form.instance.table = get_object_or_404(
-            Table, id=self.kwargs["table_id"])
-        return super().form_valid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["tables"] = Table.objects.all()
-        context["selected_table"] = get_object_or_404(
-            Table, id=self.kwargs["table_id"])
-        return context
-
-    def get_success_url(self):
-        return reverse("table_view") + f"?table_id={self.kwargs['table_id']}"
-
-
-class ItemDeleteView(DeleteView):
-    model = Item
+class StudentDeleteView(DeleteView):
+    model = Student
     template_name = "confirm_delete.html"
 
     def get_context_data(self, **kwargs):
@@ -188,16 +204,16 @@ class TruncateTablesView(View):
         return redirect(self.success_url)
 
 
-class TruncateItemsView(View):
+class TruncateStudentsView(View):
     template_name = "confirm_truncate.html"
 
     def get(self, request, *args, **kwargs):
         table_id = self.kwargs["table_id"]
         table = get_object_or_404(Table, id=table_id)
         context = {
-            "object_type": "items",
+            "object_type": "students",
             "table": table,
-            "items": table.items.all()
+            "students": table.students.all()
         }
         return render(request, self.template_name, context)
 
@@ -208,8 +224,8 @@ class TruncateItemsView(View):
         if "cancel" in request.POST:
             return redirect(reverse("table_view") + f"?table_id={table_id}")
 
-        if "items" in request.POST:
-            table.items.all().delete()
+        if "students" in request.POST:
+            table.students.all().delete()
             return redirect(reverse("table_view") + f"?table_id={table_id}")
 
         return redirect(reverse("table_view") + f"?table_id={table_id}")

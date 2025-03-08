@@ -10,13 +10,13 @@
     </p>
 
     <form method="post" class="mt-4 text-center">
-        {% csrf_token %} {% if object_type == "items"%}
+        {% csrf_token %} {% if object_type == "students"%}
         <button
             type="submit"
-            name="items"
+            name="students"
             class="w-40 cursor-pointer rounded-lg border border-zinc-800 bg-zinc-100 py-2 text-white hover:bg-zinc-900 dark:bg-zinc-950"
         >
-            Yes, Delete Items
+            Yes, Delete Students
         </button>
         {% else %}
         <button

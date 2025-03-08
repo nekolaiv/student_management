@@ -1,0 +1,91 @@
+{% extends 'base.html' %} {% block content %}
+<div
+    class="mx-auto mt-12 max-w-lg rounded-lg border bg-zinc-100 p-6 shadow-lg dark:border-zinc-800 dark:bg-zinc-950"
+>
+    <h2 class="mb-4 text-center text-2xl font-bold">
+        {% if object %}Edit{% else %}Add{% endif %} Item
+    </h2>
+
+    <form method="post" class="space-y-4">
+        {% csrf_token %}
+
+        <div>
+            <label
+                for="{{ form.student_id.id_for_label }}"
+                class="block font-medium text-zinc-200"
+                >Student ID</label
+            >
+            {{ form.student_id }}
+        </div>
+
+        <div>
+            <label
+                for="{{ form.first_name.id_for_label }}"
+                class="block font-medium text-zinc-200"
+                >Firstname</label
+            >
+            {{ form.first_name }}
+        </div>
+
+        <div>
+            <label
+                for="{{ form.last_name.id_for_label }}"
+                class="block font-medium text-zinc-200"
+                >Lastname</label
+            >
+            {{ form.last_name }}
+        </div>
+        <div>
+            <label
+                for="{{ form.email.id_for_label }}"
+                class="block font-medium text-zinc-200"
+                >Email</label
+            >
+            {{ form.email }}
+        </div>
+        <div>
+            <label
+                for="{{ form.date_of_birth.id_for_label }}"
+                class="block font-medium text-zinc-200"
+                >Date of birth</label
+            >
+            {{ form.date_of_birth }}
+        </div>
+        <div>
+            <label
+                for="{{ form.course.id_for_label }}"
+                class="block font-medium text-zinc-200"
+                >Course</label
+            >
+            {{ form.course }}
+        </div>
+        <div>
+            <label
+                for="{{ form.enrollment_date.id_for_label }}"
+                class="block font-medium text-zinc-200"
+                >EnrollMent date</label
+            >
+            {{ form.enrollment_date }}
+        </div>
+
+        <div class="flex w-full justify-center gap-2">
+            <button
+                type="submit"
+                class="w-[50%] rounded-lg border border-zinc-800 bg-zinc-100 py-2 text-white hover:bg-zinc-900 dark:bg-zinc-950"
+            >
+                {% if object %}Update{% else %}Add{% endif %} Student
+            </button>
+            <a
+                href="{% url 'table_view' %}?table_id={{ selected_table.id }}"
+                class="w-[50%]"
+                ><button
+                    type="button"
+                    class="w-[100%] cursor-pointer rounded-lg border border-zinc-800 p-2 text-center transition duration-300 hover:bg-zinc-900"
+                >
+                    Cancel
+                </button></a
+            >
+        </div>
+    </form>
+</div>
+{% endblock %}
